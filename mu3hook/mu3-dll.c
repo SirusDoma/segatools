@@ -24,6 +24,9 @@ const struct dll_bind_sym mu3_dll_syms[] = {
     }, {
         .sym = "mu3_io_get_lever",
         .off = offsetof(struct mu3_dll, get_lever),
+    }, {
+        .sym = "mu3_io_set_leds",
+        .off = offsetof(struct mu3_dll, set_leds),
     }
 };
 

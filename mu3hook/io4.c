@@ -11,9 +11,15 @@
 #include "util/dprintf.h"
 
 static HRESULT mu3_io4_poll(void *ctx, struct io4_state *state);
+static HRESULT mu3_io4_write_gpio(const uint8_t *payload);
 
 static const struct io4_ops mu3_io4_ops = {
     .poll = mu3_io4_poll,
+    .write_gpio = mu3_io4_write_gpio,
+};
+
+static const uint8_t mu3_led_mapping[18] = {
+    0x1, 0x0, 0x3, 0x5, 0x4, 0x2, 0x8, 0x6, 0x7, 0x0B, 0x9, 0x0A, 0x0E, 0x0C, 0x0D, 0x11, 0x0F, 0x10
 };
 
 HRESULT mu3_io4_hook_init(const struct io4_config *cfg)
@@ -115,6 +121,29 @@ static HRESULT mu3_io4_poll(void *ctx, struct io4_state *state)
        overflow when the lever pos is INT16_MIN. */
 
     state->adcs[0] = 0x7FFF - lever;
+
+    return S_OK;
+}
+
+static HRESULT mu3_io4_write_gpio(const uint8_t *payload)
+{
+    size_t i;
+    uint8_t rgb[18];
+    uint32_t leds;
+    HRESULT hr;
+
+    assert(mu3_dll.set_leds != NULL);
+
+    leds = payload[3] | (payload[2] << 8) | (payload[1] << 16) | (payload[0] << 24);
+    for (i = 0; i < _countof(rgb); i++) {
+        rgb[i] = ((leds >> (0x1F - mu3_led_mapping[i])) & 0x01) ? 0xFF : 0x00;
+    }
+
+    hr = mu3_dll.set_leds(rgb);
+
+    if (FAILED(hr)) {
+        return hr;
+    }
 
     return S_OK;
 }

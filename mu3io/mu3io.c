@@ -146,3 +146,10 @@ void mu3_io_get_lever(int16_t *pos)
         *pos = mu3_lever_xpos;
     }
 }
+
+HRESULT mu3_io_set_leds(const uint8_t *rgb)
+{
+    // No-Op. See https://github.com/SirusDoma/mu3hook.net
+
+    return S_OK;
+}

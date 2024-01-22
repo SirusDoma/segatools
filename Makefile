@@ -21,6 +21,8 @@ DOCKER_IMAGE_NAME     := "segatools:build"
 
 include Package.mk
 
+all: clean build zip dist
+
 .PHONY: build # Build the project
 build:
 	$(V)meson --cross cross-mingw-32.txt $(BUILD_DIR_32)

@@ -82,3 +82,10 @@ void mu3_io_get_gamebtns(uint8_t *left, uint8_t *right);
    Minimum API version: 0x0100 */
 
 void mu3_io_get_lever(int16_t *pos);
+
+/* Update the RGB lighting. A pointer to an array of 6 * 3 = 18
+   bytes is supplied. The exact mapping of this lighting control buffer is still TBD.
+
+   Minimum API version: 0x0110 */
+
+HRESULT mu3_io_set_leds(const uint8_t *rgb);

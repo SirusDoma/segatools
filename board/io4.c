@@ -224,7 +224,7 @@ static HRESULT io4_handle_write(struct irp *irp)
     case IO4_CMD_SET_GENERAL_OUTPUT:
         dprintf("USB I/O: GPIO Out\n");
 
-        return S_OK;
+        return io4_ops->write_gpio(out.payload);
 
     case IO4_CMD_SET_PWM_OUTPUT:
         dprintf("USB I/O: PWM Out\n");

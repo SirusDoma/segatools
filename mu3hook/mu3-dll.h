@@ -11,6 +11,7 @@ struct mu3_dll {
     void (*get_opbtns)(uint8_t *opbtn);
     void (*get_gamebtns)(uint8_t *left, uint8_t *right);
     void (*get_lever)(int16_t *pos);
+    HRESULT (*set_leds)(const uint8_t *rgb);
 };
 
 struct mu3_dll_config {
